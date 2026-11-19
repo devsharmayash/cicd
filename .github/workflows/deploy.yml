@@ -7,7 +7,12 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
+
+  # First Job: CI
   test:
     name: Test HTML Website
     runs-on: ubuntu-latest
@@ -25,4 +30,37 @@ jobs:
           echo "HTML file exists!"
 
       - name: Success Message
-        run: echo "My First CI Pipeline Completed Successfully!"
+        run: echo "CI Pipeline Completed Successfully!"
+
+  # Second Job: CD
+  deploy:
+    name: Deploy HTML Website
+
+    needs: test
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Website Files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy Website
+        id: deployment
+        uses: actions/deploy-pages@v4
