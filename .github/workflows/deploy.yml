@@ -1,0 +1,28 @@
+name: My First CI CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test HTML Website
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check HTML File
+        run: |
+          echo "Checking index.html file..."
+
+          test -f index.html
+
+          echo "HTML file exists!"
+
+      - name: Success Message
+        run: echo "My First CI Pipeline Completed Successfully!"
