@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "Checking index.html file..."
 
-          test -f index12.html
+          test -f index.html
 
           echo "HTML file exists!"
 
